@@ -358,22 +358,23 @@
   const lever = $('lever');
 
   let scene = localStorage.getItem('wrh_scene') || 'video';
-  let driveIdx = parseInt(localStorage.getItem('wrh_drive') || '0', 10) % DRIVES.length;
-  if (driveIdx < 0 || isNaN(driveIdx)) driveIdx = 0;
+  // svako pokretanje: nasumična vožnja od nasumičnog vremena
+  let driveIdx = Math.floor(Math.random() * DRIVES.length);
 
   function loadDrive() {
     const v = DRIVES[driveIdx];
+    const start = 60 + Math.floor(Math.random() * 540); // 1–10 min od početka
     ytHolder.innerHTML = '';
     const f = document.createElement('iframe');
     f.src = 'https://www.youtube-nocookie.com/embed/' + v.id
       + '?autoplay=1&mute=1&controls=0&rel=0&playsinline=1&iv_load_policy=3'
+      + '&start=' + start
       + '&loop=1&playlist=' + v.id;
     f.allow = 'autoplay; encrypted-media';
     f.title = v.title + ' — YouTube kanal ' + DRIVE_CHANNEL.name;
     ytHolder.appendChild(f);
     videoTitle.textContent = v.title;
     videoCredit.href = 'https://www.youtube.com/watch?v=' + v.id;
-    localStorage.setItem('wrh_drive', String(driveIdx));
   }
 
   function applyScene() {
