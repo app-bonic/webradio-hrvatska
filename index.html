@@ -15,26 +15,54 @@
 
 <div id="cabin">
 
-  <!-- ======= VJETROBRAN / NOĆNA VOŽNJA ======= -->
+  <!-- ======= VJETROBRAN / RETRO SYNTHWAVE VOŽNJA ======= -->
   <div id="windshield">
     <div class="sky">
       <div class="stars stars-1"></div>
       <div class="stars stars-2"></div>
-      <div class="moon"></div>
+      <div class="retro-sun"></div>
     </div>
     <div class="hills hills-far"></div>
     <div class="hills hills-near"></div>
-    <div class="road">
-      <div class="road-line"></div>
-      <div class="road-edge edge-l"></div>
-      <div class="road-edge edge-r"></div>
-    </div>
+    <div class="horizon-glow"></div>
+    <div class="grid-floor"></div>
     <!-- video vožnja (YouTube) -->
     <div id="videoLayer"><div id="ytHolder"></div></div>
     <div class="windshield-glass"></div>
     <a id="videoCredit" href="https://www.youtube.com/@citydrive4K" target="_blank" rel="noopener">
       📺 VOŽNJA: <b id="videoTitle"></b><span class="credit-src">IZVOR: YouTube · kanal CITY DRIVE 4K</span>
     </a>
+
+    <!-- kutni gumbi -->
+    <button class="corner-btn corner-left" id="authorBtn" title="Autor i kontakt">✉</button>
+    <button class="corner-btn corner-right" id="infoBtn" title="Upute i funkcije">i</button>
+
+    <!-- INFO kartica (u sredini) -->
+    <div class="glass-card" id="infoCard">
+      <button class="card-close" data-close>✕</button>
+      <h3>📻 KAKO RADI</h3>
+      <ul>
+        <li><b>195 hrvatskih postaja</b> — klikni postaju u popisu i svira</li>
+        <li><b>Pretraga i filtri</b> — po nazivu, gradu i žanru</li>
+        <li><b>Preseti 1–6</b> — drži tipku za spremanje postaje, klik za pozivanje</li>
+        <li><b>VOL</b> — okreći gumb / klizač na mobitelu</li>
+        <li><b>TUNE</b> — klik lijevo/desno = prethodna/sljedeća postaja</li>
+        <li><b>Poluga VOŽNJA</b> — povuci za novu DRIVE 4K video vožnju</li>
+        <li><b>VIDEO / CRTIĆ / UGAŠENO</b> — mijenja prizor kroz vjetrobran</li>
+        <li><b>Ako postaja šuti</b> — proba se rezervni stream automatski</li>
+        <li>Glasnoća, preseti i zadnja postaja se pamte u pregledniku</li>
+      </ul>
+    </div>
+
+    <!-- AUTOR kartica (u sredini) -->
+    <div class="glass-card" id="authorCard">
+      <button class="card-close" data-close>✕</button>
+      <h3>✉ AUTOR</h3>
+      <p class="author-name">app.bonic</p>
+      <p><a href="mailto:app.bonic@gmail.com">app.bonic@gmail.com</a></p>
+      <p><a href="https://tbonic.web.app/" target="_blank" rel="noopener">tbonic.web.app</a></p>
+      <p class="author-note">Video vožnje: YouTube kanal<br><a href="https://www.youtube.com/@citydrive4K" target="_blank" rel="noopener">City Drive 4K</a></p>
+    </div>
   </div>
 
   <!-- retrovizor -->

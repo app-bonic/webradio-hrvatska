@@ -370,6 +370,19 @@
     else { openSearching(); search.focus(); }
   });
 
+  // ---------- info i autor kartice (u sredini vjetrobrana) ----------
+  const infoCard = $('infoCard'), authorCard = $('authorCard');
+  function toggleCard(card) {
+    const wasOpen = card.classList.contains('show');
+    infoCard.classList.remove('show');
+    authorCard.classList.remove('show');
+    if (!wasOpen) card.classList.add('show');
+  }
+  $('infoBtn').addEventListener('click', () => toggleCard(infoCard));
+  $('authorBtn').addEventListener('click', () => toggleCard(authorCard));
+  document.querySelectorAll('.card-close').forEach(b =>
+    b.addEventListener('click', () => { infoCard.classList.remove('show'); authorCard.classList.remove('show'); }));
+
   // ---------- video vožnja (YouTube · kanal City Drive 4K) ----------
   // Samo videi s dopuštenim embedanjem; video je mutiran — zvuk daje radio.
   const DRIVE_CHANNEL = { name: 'City Drive 4K', url: 'https://www.youtube.com/@citydrive4K' };
