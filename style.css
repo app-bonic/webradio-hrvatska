@@ -475,7 +475,7 @@ body {
 
 .pwr {
   width: clamp(40px, 5.4vh, 52px); aspect-ratio: 1; border-radius: 50%;
-  font-size: clamp(17px, 2.4vh, 23px);
+  display: inline-flex; align-items: center; justify-content: center;
   color: #777;
   background: radial-gradient(circle at 35% 30%, #3c4147, #17191d 70%);
   border: 3px solid;
@@ -484,7 +484,47 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,.6);
   transition: .3s;
 }
-.on .pwr { color: var(--amber); text-shadow: 0 0 12px var(--amber-glow); }
+.pwr svg {
+  width: 52%; height: 52%;
+  fill: none; stroke: currentColor;
+  stroke-width: 2.6; stroke-linecap: round;
+}
+.on .pwr { color: var(--amber); filter: drop-shadow(0 0 7px var(--amber-glow)); }
+
+/* retro klizač glasnoće (mobitel) */
+.vol-row { display: none; align-items: center; gap: 10px; margin-top: 10px; }
+.vol-row .vol-label, .vol-row .vol-pct {
+  font-size: 12px; letter-spacing: 2px; color: #9aa2ab; min-width: 26px;
+}
+.vol-row .vol-pct { text-align: right; color: var(--amber); }
+#volSlider {
+  flex: 1; -webkit-appearance: none; appearance: none; height: 26px;
+  background: transparent;
+}
+#volSlider::-webkit-slider-runnable-track {
+  height: 8px; border-radius: 4px;
+  background: linear-gradient(#0a0c0e, #23272c);
+  border: 1px solid #000;
+  box-shadow: inset 0 1px 4px #000, 0 1px 0 rgba(255,255,255,.07);
+}
+#volSlider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 26px; height: 26px; margin-top: -10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #565c63, #212429 65%, #33373c);
+  border: 2px solid #c3c9ce;
+  box-shadow: 0 2px 6px rgba(0,0,0,.7), inset 0 0 0 3px #17191d, inset 0 0 0 4px var(--amber);
+}
+#volSlider::-moz-range-track {
+  height: 8px; border-radius: 4px;
+  background: linear-gradient(#0a0c0e, #23272c);
+  border: 1px solid #000;
+}
+#volSlider::-moz-range-thumb {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #565c63, #212429 65%, #33373c);
+  border: 2px solid #c3c9ce;
+}
 
 .presets { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
 .presets button {
@@ -530,6 +570,7 @@ body {
 }
 #panelClose:hover { color: #ffd28f; border-color: var(--amber); }
 
+.search-wrap { position: relative; }
 #search {
   font-family: 'Teko', sans-serif; font-size: 19px; letter-spacing: 1px;
   width: 100%; padding: 7px 12px 4px;
@@ -538,6 +579,13 @@ body {
   outline: none;
 }
 #search:focus { border-color: var(--amber); box-shadow: 0 0 10px var(--amber-glow); }
+#listToggle {
+  display: none;
+  position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+  border: none; background: transparent;
+  font-size: 20px; color: var(--amber);
+  padding: 4px 12px; cursor: pointer; line-height: 1;
+}
 
 .filters { display: flex; gap: 8px; margin-top: 8px; }
 .filters select {
@@ -621,16 +669,47 @@ body {
 }
 
 /* ================= MOBITEL =================
-   Raspored: POSTAJE (pretraga + popis) na vrhu, radio dolje kao player-bar,
-   vožnja je ugašena dok je korisnik ne uključi (poluga / VIDEO gumb).
-   Pretraga radi kao u Gastro Karti: klik u tražilicu → popis preko
-   cijelog ekrana; odabir postaje ili ✕ ga vraća. */
+   Raspored: gore samo traka POSTAJE + tražilica (bez popisa),
+   u SREDINI vožnja (animacija / video / ugašeno — kruži gumbom),
+   dolje radio kao player-bar.
+   Pretraga kao u Gastro Karti: klik u tražilicu ili na strelicu ▾ →
+   popis preko cijelog ekrana; odabir postaje ili ▴ ga makne. */
 @media (max-width: 760px) {
   #cabin { min-height: 100dvh; }
 
-  /* video traka — skrivena dok se vožnja ne uključi; tada ide na vrh */
-  #windshield { display: none; order: 0; flex: 0 0 24dvh; min-height: 130px; border-radius: 0; }
-  #windshield.video-on { display: block; border-radius: 0; }
+  /* POSTAJE traka — na vrhu, samo naslov + tražilica */
+  #panel {
+    order: 0;
+    position: static; transform: none; transition: none;
+    width: auto; flex: 0 0 auto; min-height: 0;
+    border-left: none;
+    box-shadow: none; padding: 8px 10px;
+  }
+  .panel-head { margin-bottom: 6px; }
+  .panel-head h2 { font-size: 17px; }
+  #panelClose { display: none; }
+  #listToggle { display: block; }
+  #search { font-size: 17px; padding: 8px 40px 5px 10px; }
+  .filters, .count, #stationList { display: none; }
+  .filters select { font-size: 15px; }
+  #stationList .name { font-size: 17px; }
+  #stationList .sub { font-size: 12px; }
+  #stationList img, #stationList .logo-ph { width: 32px; height: 32px; }
+
+  /* pretraga preko cijelog ekrana (gastro sustav) */
+  #cabin.searching #panel { flex: 1 1 auto; min-height: 0; display: flex; }
+  #cabin.searching .filters { display: flex; }
+  #cabin.searching .count { display: block; }
+  #cabin.searching #stationList { display: block; }
+  #cabin.searching #dash, #cabin.searching #windshield { display: none; }
+
+  /* SREDINA — vožnja (animacija ili video); 'off-mode' = ugašeno */
+  #windshield {
+    order: 1; display: block;
+    flex: 1 1 auto; min-height: 140px; border-radius: 0;
+  }
+  #windshield.video-on { border-radius: 0; }
+  #windshield.off-mode { display: none; }
   #mirror { display: none; }
   #videoCredit {
     left: 6px; bottom: 5px; max-width: 80vw;
@@ -638,34 +717,15 @@ body {
   }
   #videoCredit .credit-src { font-size: 9px; letter-spacing: 1px; }
 
-  /* POSTAJE — na vrhu, popis uvijek vidljiv */
-  #panel {
-    order: 1;
-    position: static; transform: none; transition: none;
-    width: auto; flex: 1 1 auto; min-height: 160px;
-    border-left: none;
-    box-shadow: none; padding: 10px 10px 6px;
-  }
-  .panel-head { margin-bottom: 6px; }
-  .panel-head h2 { font-size: 19px; }
-  #panelClose { display: none; }
-  #search { font-size: 17px; padding: 8px 10px 5px; }
-  .filters select { font-size: 15px; }
-  .count { margin: 6px 2px 2px; }
-  #stationList .name { font-size: 17px; }
-  #stationList .sub { font-size: 12px; }
-  #stationList img, #stationList .logo-ph { width: 32px; height: 32px; }
-
-  /* pretraga preko cijelog ekrana (gastro sustav) */
-  #cabin.searching #dash, #cabin.searching #windshield { display: none; }
-  #cabin.searching #panelClose { display: block; }
-
   /* radio — dolje, kompaktan player-bar */
   #dash {
     order: 2; flex: 0 0 auto; display: block;
+    margin-top: auto;
     padding: 16px 8px 8px; min-height: 0;
     border-top: 2px solid #6a5a3a;
   }
+  #volWrap { display: none; }
+  .vol-row { display: flex; }
   .dash-left { display: none; }
   #radio { max-width: 560px; margin: 0 auto; padding: 12px 10px 8px; border-radius: 10px; }
   .radio-badge { left: 12px; top: -12px; font-size: 13px; letter-spacing: 2px; padding: 1px 8px 0; }

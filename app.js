@@ -183,7 +183,14 @@
     audio.volume = vol;
     localStorage.setItem('wrh_vol', vol.toFixed(2));
     updateVolKnob();
+    const sl = $('volSlider'), pct = $('volPct');
+    if (sl) { sl.value = Math.round(vol * 100); pct.textContent = Math.round(vol * 100); }
   }
+
+  // mobilni retro klizač glasnoće
+  $('volSlider').addEventListener('input', (e) => setVol(e.target.value / 100));
+  $('volSlider').value = Math.round(vol * 100);
+  $('volPct').textContent = Math.round(vol * 100);
   volKnob.addEventListener('wheel', (e) => {
     e.preventDefault();
     setVol(vol + (e.deltaY < 0 ? .05 : -.05));
@@ -344,17 +351,24 @@
 
   // ---------- mobilna pretraga preko cijelog ekrana (kao Gastro Karta) ----------
   const cabin = $('cabin');
+  const listToggle = $('listToggle');
   function openSearching() {
     if (!window.matchMedia('(max-width: 760px)').matches) return;
     cabin.classList.add('searching');
+    listToggle.textContent = '▴';
   }
   function closeSearching() {
     if (!cabin.classList.contains('searching')) return;
     cabin.classList.remove('searching');
+    listToggle.textContent = '▾';
     search.blur();
   }
   search.addEventListener('focus', openSearching);
   search.addEventListener('click', openSearching);
+  listToggle.addEventListener('click', () => {
+    if (cabin.classList.contains('searching')) closeSearching();
+    else { openSearching(); search.focus(); }
+  });
 
   // ---------- video vožnja (YouTube · kanal City Drive 4K) ----------
   // Samo videi s dopuštenim embedanjem; video je mutiran — zvuk daje radio.
@@ -397,14 +411,19 @@
     videoCredit.href = 'https://www.youtube.com/watch?v=' + v.id;
   }
 
+  const SCENE_LABEL = { video: '▶ VIDEO', anim: '✽ CRTIĆ', off: '○ UGAŠENO' };
+
   function applyScene() {
     windshield.classList.toggle('video-on', scene === 'video');
+    windshield.classList.toggle('off-mode', scene === 'off');
     if (scene === 'video') {
       if (!ytHolder.firstChild) loadDrive();
     } else {
-      ytHolder.innerHTML = ''; // zaustavi video kad se vratimo na animaciju
+      ytHolder.innerHTML = ''; // zaustavi video kad nije u video modu
     }
-    localStorage.setItem('wrh_scene', scene);
+    $('sceneMode').textContent = mqMobile.matches ? SCENE_LABEL[scene] : 'VIDEO / ANIM';
+    // mobitel ima svoj default (ugašeno→ručno), ne prepisuj desktopnu postavku
+    if (!mqMobile.matches) localStorage.setItem('wrh_scene', scene);
   }
 
   lever.addEventListener('click', () => {
@@ -415,10 +434,16 @@
     showToast('VOŽNJA: ' + DRIVES[driveIdx].title);
   });
 
+  // mobitel: kruži VIDEO → CRTIĆ → UGAŠENO; desktop: VIDEO ↔ CRTIĆ
   $('sceneMode').addEventListener('click', () => {
-    scene = scene === 'video' ? 'anim' : 'video';
+    if (mqMobile.matches) {
+      scene = scene === 'video' ? 'anim' : scene === 'anim' ? 'off' : 'video';
+    } else {
+      scene = scene === 'video' ? 'anim' : 'video';
+    }
     applyScene();
-    showToast(scene === 'video' ? 'VIDEO VOŽNJA · CITY DRIVE 4K' : 'CRTANA VOŽNJA');
+    showToast(scene === 'video' ? 'VIDEO VOŽNJA · CITY DRIVE 4K'
+      : scene === 'anim' ? 'CRTANA VOŽNJA' : 'VOŽNJA UGAŠENA');
   });
 
   applyScene();
