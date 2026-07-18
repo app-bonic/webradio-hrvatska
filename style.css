@@ -331,18 +331,6 @@ body {
   font-size: clamp(9px, 1.1vw, 13px); letter-spacing: 3px; color: #8b95a0;
 }
 
-.steering {
-  position: absolute; bottom: -34vh; left: 50%; transform: translateX(-58%);
-  width: 46vh; height: 46vh; border-radius: 50%;
-  border: 26px solid #14100d;
-  box-shadow: inset 0 4px 10px rgba(255,255,255,.06), 0 -6px 20px rgba(0,0,0,.5);
-  pointer-events: none;
-}
-.steering::before {
-  content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
-  width: 70%; height: 26px; background: #14100d; border-radius: 13px;
-}
-
 /* ---- desno: poluga za vožnju ---- */
 .dash-right { display: flex; flex-direction: column; align-items: center; gap: 14px; }
 
@@ -573,8 +561,8 @@ body {
 }
 .on .pwr { color: var(--amber); filter: drop-shadow(0 0 7px var(--amber-glow)); }
 
-/* retro klizač glasnoće (mobitel) */
-.vol-row { display: none; align-items: center; gap: 10px; margin-top: 10px; }
+/* retro klizač glasnoće (desktop i mobitel) */
+.vol-row { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
 .vol-row .vol-label, .vol-row .vol-pct {
   font-size: 12px; letter-spacing: 2px; color: #9aa2ab; min-width: 26px;
 }

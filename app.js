@@ -403,8 +403,8 @@
   const lever = $('lever');
 
   const mqMobile = window.matchMedia('(max-width: 760px)');
-  // mobitel: vožnja je po defaultu ugašena — pali se tek klikom (poluga / VIDEO)
-  let scene = mqMobile.matches ? 'anim' : (localStorage.getItem('wrh_scene') || 'video');
+  // default: VIDEO vožnja; izbor se pamti za sljedeći posjet (desktop i mobitel)
+  let scene = localStorage.getItem('wrh_scene') || 'video';
   // svako pokretanje: nasumična vožnja od nasumičnog vremena
   let driveIdx = Math.floor(Math.random() * DRIVES.length);
 
@@ -435,8 +435,7 @@
       ytHolder.innerHTML = ''; // zaustavi video kad nije u video modu
     }
     $('sceneMode').textContent = mqMobile.matches ? SCENE_LABEL[scene] : 'VIDEO / ANIM';
-    // mobitel ima svoj default (ugašeno→ručno), ne prepisuj desktopnu postavku
-    if (!mqMobile.matches) localStorage.setItem('wrh_scene', scene);
+    localStorage.setItem('wrh_scene', scene);
   }
 
   lever.addEventListener('click', () => {
