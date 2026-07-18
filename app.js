@@ -307,6 +307,7 @@
       li.addEventListener('click', () => {
         playStation(i);
         if (window.innerWidth < 760) panel.classList.remove('open');
+        if (typeof closeSearching === 'function') closeSearching();
       });
       frag.appendChild(li);
     }
@@ -336,7 +337,24 @@
 
   // ---------- panel ----------
   $('panelToggle').addEventListener('click', () => panel.classList.toggle('open'));
-  $('panelClose').addEventListener('click', () => panel.classList.remove('open'));
+  $('panelClose').addEventListener('click', () => {
+    panel.classList.remove('open');
+    closeSearching();
+  });
+
+  // ---------- mobilna pretraga preko cijelog ekrana (kao Gastro Karta) ----------
+  const cabin = $('cabin');
+  function openSearching() {
+    if (!window.matchMedia('(max-width: 760px)').matches) return;
+    cabin.classList.add('searching');
+  }
+  function closeSearching() {
+    if (!cabin.classList.contains('searching')) return;
+    cabin.classList.remove('searching');
+    search.blur();
+  }
+  search.addEventListener('focus', openSearching);
+  search.addEventListener('click', openSearching);
 
   // ---------- video vožnja (YouTube · kanal City Drive 4K) ----------
   // Samo videi s dopuštenim embedanjem; video je mutiran — zvuk daje radio.
@@ -357,7 +375,9 @@
   const videoTitle = $('videoTitle');
   const lever = $('lever');
 
-  let scene = localStorage.getItem('wrh_scene') || 'video';
+  const mqMobile = window.matchMedia('(max-width: 760px)');
+  // mobitel: vožnja je po defaultu ugašena — pali se tek klikom (poluga / VIDEO)
+  let scene = mqMobile.matches ? 'anim' : (localStorage.getItem('wrh_scene') || 'video');
   // svako pokretanje: nasumična vožnja od nasumičnog vremena
   let driveIdx = Math.floor(Math.random() * DRIVES.length);
 
