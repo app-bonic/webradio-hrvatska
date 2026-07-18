@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WEB RADIO HRVATSKA — Retro auto radio</title>
+<meta name="description" content="Slušaj hrvatske radio postaje uživo — retro auto radio u kabini starog auta. 195 postaja, besplatno.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Teko:wght@400;500;600&family=Monoton&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📻</text></svg>">
+</head>
+<body>
+
+<div id="cabin">
+
+  <!-- ======= VJETROBRAN / NOĆNA VOŽNJA ======= -->
+  <div id="windshield">
+    <div class="sky">
+      <div class="stars stars-1"></div>
+      <div class="stars stars-2"></div>
+      <div class="moon"></div>
+    </div>
+    <div class="hills hills-far"></div>
+    <div class="hills hills-near"></div>
+    <div class="road">
+      <div class="road-line"></div>
+      <div class="road-edge edge-l"></div>
+      <div class="road-edge edge-r"></div>
+    </div>
+    <!-- video vožnja (YouTube) -->
+    <div id="videoLayer"><div id="ytHolder"></div></div>
+    <div class="windshield-glass"></div>
+    <a id="videoCredit" href="https://www.youtube.com/@citydrive4K" target="_blank" rel="noopener">
+      📺 VOŽNJA: <b id="videoTitle"></b><span class="credit-src">IZVOR: YouTube · kanal CITY DRIVE 4K</span>
+    </a>
+  </div>
+
+  <!-- retrovizor -->
+  <div id="mirror"><span>WEB RADIO HRVATSKA</span></div>
+
+  <!-- ======= KOMANDNA PLOČA ======= -->
+  <div id="dash">
+    <div class="dash-trim"></div>
+
+    <!-- lijevo: brzinomjer/signal + volan -->
+    <div class="dash-left">
+      <div class="gauge" id="gauge">
+        <div class="gauge-face">
+          <div class="gauge-ticks"></div>
+          <div class="gauge-needle" id="gaugeNeedle"></div>
+          <div class="gauge-cap"></div>
+          <span class="gauge-label">SIGNAL</span>
+        </div>
+      </div>
+      <div class="steering"></div>
+    </div>
+
+    <!-- sredina: RETRO RADIO -->
+    <div id="radio">
+      <a class="radio-badge" href="https://tbonic.web.app/" target="_blank" rel="noopener" title="tbonic.web.app">app.bonic <em>DeLux</em></a>
+
+      <div class="dial">
+        <div class="dial-backlight" id="dialBacklight"></div>
+        <div class="dial-scale" id="dialScale"></div>
+        <div class="dial-needle" id="needle"></div>
+        <div class="dial-glass"></div>
+        <span class="dial-unit">MHz · FM</span>
+      </div>
+
+      <div class="lcd-row">
+        <span class="led" id="statusLed"></span>
+        <div class="lcd"><span id="lcdText">DOBRODOŠLI · ODABERI POSTAJU ▸</span></div>
+        <div class="vu" id="vu">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="knob-wrap">
+          <div class="knob" id="volKnob" title="Glasnoća — povuci ili kotačić miša"><i></i></div>
+          <label>VOL</label>
+        </div>
+
+        <button class="pwr" id="pwrBtn" title="Uključi / isključi">⏻</button>
+
+        <div class="presets" id="presets" title="Klik = pozovi · Drži = spremi"></div>
+
+        <div class="knob-wrap">
+          <div class="knob" id="tuneKnob" title="Traženje — prethodna / sljedeća"><i></i></div>
+          <label>TUNE</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- desno: poluga za vožnju + tipka za popis -->
+    <div class="dash-right">
+      <div class="scene-box">
+        <span class="scene-label">VOŽNJA</span>
+        <div id="lever" title="Povuci polugu — sljedeća vožnja">
+          <div class="lever-track"></div>
+          <div class="lever-stick"><i></i></div>
+        </div>
+        <button id="sceneMode" title="Video vožnja ili crtana animacija">VIDEO / ANIM</button>
+      </div>
+      <button id="panelToggle">📻 POSTAJE</button>
+    </div>
+  </div>
+
+  <!-- ======= PRETINAC S POSTAJAMA ======= -->
+  <aside id="panel">
+    <div class="panel-head">
+      <h2>▸ RADIO POSTAJE</h2>
+      <button id="panelClose" aria-label="Zatvori">✕</button>
+    </div>
+    <input type="search" id="search" placeholder="Traži postaju…" autocomplete="off">
+    <div class="filters">
+      <select id="cityFilter"><option value="">Svi gradovi</option></select>
+      <select id="genreFilter"><option value="">Svi žanrovi</option></select>
+    </div>
+    <div class="count" id="count"></div>
+    <ul id="stationList"></ul>
+  </aside>
+
+  <div id="toast"></div>
+</div>
+
+<script src="stations.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
